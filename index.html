@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, initial-scale=1.0">
+<title>PROTOCOLO 11-23</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #00ff41;
+  --green-dim: #00bb30;
+  --green-faint: #003d0f;
+  --amber: #ffb000;
+  --amber-dim: #7a5400;
+  --red: #ff3333;
+  --white: #e8e8e8;
+  --gray: #556066;
+  --border: #1a2a1e;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  width:100%; height:100%;
+  background:#000;
+  overflow:hidden;
+  font-family:'Share Tech Mono', monospace;
+  color:var(--green);
+  cursor:crosshair;
+}
+
+/* ── SCANLINES ── */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);
+  pointer-events:none;
+  z-index:9999;
+}
+
+/* ── 16:9 STAGE ── */
+#stage {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:1920px; height:1080px;
+  overflow:hidden;
+  background:#000;
+}
+
+/* ── SCREENS ── */
+.screen {
+  position:absolute; inset:0;
+  display:none;
+  flex-direction:column;
+}
+.screen.active { display:flex; }
+
+/* ══════════════════════════════
+   SCREEN 0 — BOOT
+══════════════════════════════ */
+#boot {
+  align-items:center;
+  justify-content:center;
+  background:#000;
+}
+
+.boot-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0,40,10,0.5) 0%, transparent 70%),
+    repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,255,65,0.015) 40px,rgba(0,255,65,0.015) 41px),
+    repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(0,255,65,0.015) 40px,rgba(0,255,65,0.015) 41px);
+}
+
+.boot-inner {
+  position:relative;
+  z-index:2;
+  text-align:center;
+  width:1100px;
+}
+
+.boot-sys {
+  font-size:13px;
+  letter-spacing:.6em;
+  color:var(--gray);
+  margin-bottom:24px;
+}
+
+.glitch-wrap { line-height:.95; margin-bottom:18px; }
+
+.gtitle {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  letter-spacing:.25em;
+  color:var(--green);
+  position:relative;
+  display:inline-block;
+}
+.gtitle-main { font-size:110px; text-shadow:0 0 40px rgba(0,255,65,.45); }
+.gtitle-num  { font-size:140px; color:var(--amber); text-shadow:0 0 50px rgba(255,176,0,.45); margin-top:-16px; display:block; }
+
+.gtitle::before,.gtitle::after {
+  content:attr(data-t);
+  position:absolute; top:0; left:0; right:0;
+  opacity:0;
+}
+.gtitle::before { animation:gl1 4s infinite; color:var(--amber); clip-path:polygon(0 25%,100% 25%,100% 45%,0 45%); }
+.gtitle::after  { animation:gl2 4s infinite; color:var(--red);   clip-path:polygon(0 60%,100% 60%,100% 78%,0 78%); }
+
+@keyframes gl1{ 0%,88%,100%{opacity:0;transform:translateX(0)} 90%{opacity:.7;transform:translateX(-5px)} 93%{opacity:.7;transform:translateX(5px)} 95%{opacity:0} }
+@keyframes gl2{ 0%,84%,100%{opacity:0;transform:translateX(0)} 86%{opacity:.7;transform:translateX(5px)} 89%{opacity:.7;transform:translateX(-5px)} 91%{opacity:0} }
+@keyframes flk { 0%,96%,100%{opacity:1} 97%{opacity:.65} 98.5%{opacity:1} 99%{opacity:.4} }
+
+.boot-sub {
+  font-size:13px;
+  letter-spacing:.55em;
+  color:var(--green-dim);
+  text-transform:uppercase;
+  margin-bottom:40px;
+}
+
+.term-box {
+  border:1px solid var(--green-dim);
+  background:rgba(0,255,65,.025);
+  padding:28px 44px;
+  text-align:left;
+  position:relative;
+  margin:0 auto 36px;
+  width:860px;
+}
+.term-box::before {
+  content:'[ TRANSMISIÓN CIFRADA — NIVEL ÓMEGA ]';
+  position:absolute; top:-10px; left:20px;
+  background:#000; padding:0 10px;
+  font-size:11px; color:var(--green-dim); letter-spacing:.25em;
+}
+.term-txt { font-size:15px; line-height:1.85; color:var(--white); }
+.term-txt .hi  { color:var(--green); }
+.term-txt .am  { color:var(--amber); }
+.term-txt .dm  { color:var(--gray);  }
+
+.cursor { display:inline-block; width:9px; height:15px; background:var(--green); vertical-align:middle; animation:blk 1s step-end infinite; }
+@keyframes blk { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.btn-start {
+  display:inline-block;
+  padding:16px 60px;
+  border:1px solid var(--green);
+  background:transparent;
+  color:var(--green);
+  font-family:'Share Tech Mono',monospace;
+  font-size:15px;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:all .3s;
+  animation:flk 5s infinite;
+}
+.btn-start::before {
+  content:'';
+  position:absolute; top:0; left:-100%;
+  width:100%; height:100%;
+  background:rgba(0,255,65,.1);
+  transition:left .3s;
+}
+.btn-start:hover::before { left:0; }
+.btn-start:hover { box-shadow:0 0 30px rgba(0,255,65,.35); text-shadow:0 0 12px rgba(0,255,65,.9); }
+
+/* ══════════════════════════════
+   SHARED LAYOUT — ENIGMA SCREENS
+══════════════════════════════ */
+.nav {
+  flex-shrink:0;
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 40px;
+  border-bottom:1px solid var(--green-faint);
+  background:rgba(0,8,2,.85);
+  backdrop-filter:blur(8px);
+  z-index:10;
+}
+.nav-logo { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; letter-spacing:.3em; color:var(--green); }
+.nav-dots { display:flex; gap:8px; align-items:center; }
+.dot { width:10px; height:10px; border-radius:50%; border:1px solid var(--gray); background:transparent; transition:all .3s; }
+.dot.done   { background:var(--green); border-color:var(--green); }
+.dot.active { background:var(--amber); border-color:var(--amber); animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,176,0,.4)} 50%{box-shadow:0 0 0 7px rgba(255,176,0,0)} }
+
+.nav-right { display:flex; gap:20px; align-items:center; }
+.nav-tag { font-size:12px; color:var(--amber); letter-spacing:.1em; }
+
+.btn-arch-nav {
+  font-family:'Share Tech Mono',monospace;
+  font-size: 11px;
+  color: var(--amber);
+  border: 1px solid var(--amber-dim);
+  padding: 6px 14px;
+  text-decoration: none;
+  letter-spacing: .15em;
+  transition: all .3s;
+  background: rgba(255, 176, 0, 0.05);
+  text-transform: uppercase;
+}
+.btn-arch-nav:hover {
+  background: rgba(255, 176, 0, 0.2);
+  border-color: var(--amber);
+  box-shadow: 0 0 12px rgba(255, 176, 0, 0.3);
+}
+
+/* TWO-COLUMN LAYOUT */
+.cols {
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  overflow:hidden;
+}
+.col-l, .col-r {
+  padding:36px 48px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.col-l { border-right:1px solid var(--border); }
+
+/* scrollbar */
+.col-l::-webkit-scrollbar,.col-r::-webkit-scrollbar{width:3px}
+.col-l::-webkit-scrollbar-track,.col-r::-webkit-scrollbar-track{background:transparent}
+.col-l::-webkit-scrollbar-thumb,.col-r::-webkit-scrollbar-thumb{background:var(--green-faint)}
+
+/* HEADER BLOCK */
+.e-num   { font-size:11px; letter-spacing:.55em; color:var(--green-dim); text-transform:uppercase; }
+.e-title { font-family:'Rajdhani',sans-serif; font-size:36px; font-weight:600; color:var(--white); letter-spacing:.08em; line-height:1.1; }
+.e-desc  { font-size:13px; color:#888; line-height:1.75; }
+
+/* PANEL */
+.panel {
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.012);
+  padding:20px 24px;
+  position:relative;
+  flex-shrink:0;
+}
+.panel::before {
+  content:attr(data-lbl);
+  position:absolute; top:-9px; left:14px;
+  background:#000; padding:0 8px;
+  font-size:10px; letter-spacing:.4em; color:var(--green-dim); text-transform:uppercase;
+}
+
+.clue {
+  font-family:'Courier Prime',monospace;
+  font-size:14px; line-height:1.95; color:var(--white);
+}
+.clue .rct { background:var(--green-faint); color:var(--green); padding:0 5px; border:1px solid var(--green-dim); }
+.clue .am  { color:var(--amber); }
+.clue .dm  { color:var(--gray);  }
+
+.code-blk {
+  background:#000;
+  border:1px solid var(--green-faint);
+  border-left:3px solid var(--green-dim);
+  padding:14px 18px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px; color:var(--green);
+  letter-spacing:.05em; word-break:break-all; line-height:1.6;
+  position:relative;
+}
+.code-blk .lbl {
+  font-size:10px; color:var(--green-dim); letter-spacing:.35em;
+  display:block; margin-bottom:7px;
+  border-bottom:1px solid var(--green-faint); padding-bottom:6px;
+}
+
+/* ANSWER ZONE */
+.ans-section { display:flex; flex-direction:column; gap:10px; flex-shrink:0; }
+.ans-lbl { font-size:11px; letter-spacing:.45em; color:var(--green-dim); text-transform:uppercase; }
+.ans-row { display:flex; gap:10px; }
+.ans-input {
+  flex:1; background:#000;
+  border:1px solid var(--green-dim); color:var(--green);
+  font-family:'Share Tech Mono',monospace; font-size:17px;
+  padding:12px 16px; letter-spacing:.2em; text-transform:uppercase; outline:none;
+  transition:border-color .3s,box-shadow .3s;
+}
+.ans-input:focus { border-color:var(--green); box-shadow:0 0 18px rgba(0,255,65,.18); }
+.ans-input.ok    { border-color:var(--green); box-shadow:0 0 25px rgba(0,255,65,.45); }
+.ans-input.err   { border-color:var(--red); animation:shk .4s ease; }
+@keyframes shk { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+
+.btn-chk {
+  padding:12px 28px;
+  background:transparent; border:1px solid var(--green-dim);
+  color:var(--green-dim);
+  font-family:'Share Tech Mono',monospace; font-size:13px;
+  letter-spacing:.2em; text-transform:uppercase; cursor:pointer;
+  transition:all .3s; white-space:nowrap;
+}
+.btn-chk:hover { border-color:var(--green); color:var(--green); box-shadow:0 0 18px rgba(0,255,65,.22); }
+
+.feedback { font-size:12px; min-height:18px; letter-spacing:.2em; transition:all .3s; }
+.feedback.ok  { color:var(--green); }
+.feedback.err { color:var(--red); }
+
+/* HINT */
+.hint-btn {
+  font-size:11px; color:var(--green-dim); letter-spacing:.3em;
+  cursor:pointer; text-decoration:underline;
+  background:none; border:none; font-family:'Share Tech Mono',monospace;
+  text-transform:uppercase; transition:color .2s; padding:0;
+}
+.hint-btn:hover { color:var(--amber); }
+.hint-box {
+  display:none;
+  border:1px solid var(--amber-dim); border-left:3px solid var(--amber);
+  padding:12px 16px;
+  background:rgba(255,176,0,.03);
+  font-size:12px; line-height:1.75; color:#aaa;
+}
+.hint-box.on { display:block; }
+
+/* FOREST PIXEL ENIGMA */
+.forest {
+  width:100%; height:220px;
+  background:linear-gradient(180deg,#001505 0%,#002a0c 45%,#001505 100%);
+  border:1px solid var(--green-faint);
+  position:relative; overflow:hidden; cursor:pointer;
+}
+.forest-lines {
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,255,65,.025) 3px,rgba(0,255,65,.025) 4px);
+}
+.px-spot {
+  position:absolute;
+  width:5px; height:5px;
+  background:transparent; cursor:pointer;
+  left:61.8%; top:38.2%;
+}
+.px-spot:hover { background:rgba(0,255,65,.6); }
+.px-reveal {
+  display:none;
+  background:rgba(0,0,0,.96); border:1px solid var(--green);
+  padding:12px 20px; font-size:13px; color:var(--green); text-align:center;
+}
+.img-cap { font-size:11px; color:var(--gray); text-align:center; margin-top:6px; letter-spacing:.2em; }
+
+/* CIPHER GRID */
+.cipher-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.cblk { display:flex; flex-direction:column; gap:6px; }
+.clbl { font-size:10px; letter-spacing:.4em; color:var(--green-dim); text-transform:uppercase; }
+.cval { font-family:'Share Tech Mono',monospace; font-size:26px; color:var(--white); letter-spacing:.4em; }
+
+/* ENIGMA MACHINE */
+.rotor-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:8px 0; }
+.rotor {
+  border:1px solid var(--green-faint);
+  padding:14px 10px; text-align:center;
+  background:rgba(0,255,65,.018);
+}
+.rlbl { font-size:10px; letter-spacing:.4em; color:var(--green-dim); text-transform:uppercase; margin-bottom:6px; }
+.rlet { font-family:'Rajdhani',sans-serif; font-size:52px; font-weight:700; color:var(--amber); text-shadow:0 0 20px rgba(255,176,0,.5); line-height:1; }
+
+.cfg-table { width:100%; font-size:13px; }
+.cfg-table td { padding:6px 0; border-bottom:1px solid var(--border); }
+.cfg-table td:first-child { color:var(--gray); font-size:11px; letter-spacing:.2em; text-transform:uppercase; width:52%; }
+.cfg-table td:last-child  { color:var(--white); }
+
+/* STEPS LIST */
+.steps { list-style:none; counter-reset:st; }
+.steps li {
+  counter-increment:st;
+  display:flex; gap:10px;
+  margin-bottom:9px; font-size:13px; color:#aaa; align-items:flex-start;
+}
+.steps li::before {
+  content:counter(st)".";
+  font-family:'Share Tech Mono',monospace;
+  font-weight:700; color:var(--green); min-width:18px; margin-top:1px;
+}
+
+/* FINAL ENIGMA WORD TILES */
+.word-tiles { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:6px 0; }
+.wtile {
+  border:1px solid var(--border); padding:12px 16px;
+}
+.wtile .wlbl { font-size:10px; color:var(--green-dim); letter-spacing:.3em; text-transform:uppercase; }
+.wtile .wval { font-size:20px; color:var(--white); margin-top:4px; letter-spacing:.2em; font-family:'Share Tech Mono',monospace; }
+.wtile-wide { border:1px solid var(--border); padding:12px 16px; grid-column:1/-1; display:flex; align-items:center; gap:16px; }
+
+/* ══════════════════════════════
+   FINAL SCREEN
+══════════════════════════════ */
+#final {
+  background:radial-gradient(ellipse at center, #001a05 0%, #000 65%);
+  align-items:center; justify-content:center;
+  text-align:center;
+}
+.seal {
+  width:130px; height:130px;
+  border:2px solid var(--green); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 28px; position:relative;
+  animation:spinSeal 22s linear infinite;
+}
+@keyframes spinSeal { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.seal-inner { animation:spinSeal 22s linear infinite reverse; }
+.seal::before {
+  content:'▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲';
+  position:absolute; font-size:9px; color:var(--green-dim);
+  letter-spacing:7px; width:170px; text-align:center;
+}
+.final-title {
+  font-family:'Rajdhani',sans-serif;
+  font-size:72px; font-weight:700; letter-spacing:.35em;
+  color:var(--green); text-shadow:0 0 40px rgba(0,255,65,.6);
+  margin-bottom:10px; animation:flk 5s infinite;
+}
+.stamp {
+  display:inline-block; border:2px solid var(--red); color:var(--red);
+  padding:4px 14px; font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:.4em; transform:rotate(-2deg); opacity:.8;
+  margin-bottom:24px;
+}
+.final-msg {
+  max-width:700px; margin:0 auto 28px;
+  font-family:'Courier Prime',monospace;
+  font-size:16px; line-height:2; color:#aaa;
+}
+.final-msg .hi { color:var(--green); }
+.prog-wrap { width:400px; margin:10px auto 0; background:var(--green-faint); height:2px; }
+.prog-bar  { height:100%; background:var(--green); width:0%; transition:width .5s; box-shadow:0 0 10px var(--green); }
+.stats { margin-top:22px; font-size:12px; color:var(--gray); letter-spacing:.4em; line-height:2.2; }
+.stats span { color:var(--green); }
+
+/* ── STATIC FLASH ── */
+#static {
+  position:fixed; inset:0; pointer-events:none; z-index:9997;
+  background:transparent; opacity:0;
+}
+#static.go { animation:sfx .18s ease; }
+@keyframes sfx { 0%{opacity:0} 30%{opacity:.18;background:rgba(0,255,65,.08)} 60%{opacity:0} 80%{opacity:.1} 100%{opacity:0} }
+
+/* ── SCALE ── */
+#scale-notice {
+  display:none;
+  position:fixed; inset:0; background:#000;
+  align-items:center; justify-content:center;
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px; color:var(--green-dim); letter-spacing:.2em; text-align:center;
+  z-index:99999;
+}
+</style>
+</head>
+<body>
+
+<div id="static"></div>
+
+<div id="scale-notice">
+  <div>ROTACIÓN NO COMPATIBLE<br><span style="font-size:12px;color:var(--gray);margin-top:8px;display:block">El Protocolo requiere orientación horizontal</span></div>
+</div>
+
+<div id="stage">
+
+<div class="screen active" id="boot">
+  <div class="boot-bg"></div>
+  <div class="boot-inner">
+    <div class="boot-sys">▌ SISTEMA ÓMEGA — NODO 11-23 ▌</div>
+    <div class="glitch-wrap">
+      <span class="gtitle gtitle-main" data-t="PROTOCOLO">PROTOCOLO</span>
+      <span class="gtitle gtitle-num" data-t="11-23">11-23</span>
+    </div>
+    <div class="boot-sub">CLASIFICACIÓN ÓMEGA · ACCESO RESTRINGIDO</div>
+
+    <div class="term-box">
+      <div class="term-txt">
+        <span class="dm">// INICIO DE TRANSMISIÓN — 03:41:17 UTC</span><br><br>
+        Han encontrado este canal porque <span class="hi">merecen encontrarlo</span>.<br>
+        El mundo opera sobre dos capas: la que se muestra y la que <span class="am">sostiene todo lo demás</span>.<br><br>
+        El <span class="hi">Protocolo 11-23</span> no es un juego. Es una <span class="am">prueba de percepción</span>.<br>
+        Los que ven píxeles donde otros ven imágenes. Los que leen código donde otros leen páginas.<br>
+        Los que descifran <span class="hi">donde otros solo obedecen</span>.<br><br>
+        <span class="dm">// Fibonacci conocía la puerta. El Arquitecto dejó el mapa. La Máquina guarda la llave.</span><br><br>
+        <em>¿Están preparados para ver lo que está oculto?</em>&nbsp;&nbsp;
+        <span class="hi">PROTOCOLO 11-23 — INICIALIZADO.</span> <span class="cursor"></span>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="go('e1')">▶ INICIAR PROTOCOLO</button>
+  </div>
+</div>
+
+<div class="screen" id="e1">
+  <div class="nav">
+    <div class="nav-logo">PROTOCOLO 11-23</div>
+    <div class="nav-dots">
+      <div class="dot active" id="d1a"></div>
+      <div class="dot" id="d2a"></div>
+      <div class="dot" id="d3a"></div>
+      <div class="dot" id="d4a"></div>
+      <div class="dot" id="d5a"></div>
+      <div class="dot" id="d6a"></div>
+    </div>
+    <div class="nav-right">
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <div class="nav-tag" id="tmr">00:00</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <div>
+        <div class="e-num">ENIGMA 01 — ESTEGANOGRAFÍA</div>
+        <div class="e-title">EL PÍXEL DE LA VERDAD</div>
+        <div class="e-desc" style="margin-top:8px;">La realidad tiene capas. No toda la información se escribe. Algunas cosas se <em>ocultan</em> en el punto donde la naturaleza las colocaría.</div>
+      </div>
+
+      <div class="panel" data-lbl="// transmisión visual">
+        <div class="forest" id="fimg" onclick="clickForest(event)">
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.55" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid slice">
+            <rect width="900" height="220" fill="#000a02"/>
+            <polygon points="80,220 115,105 150,220"  fill="#001a05"/>
+            <polygon points="110,220 150,75 190,220"  fill="#002208"/>
+            <polygon points="210,220 255,92 300,220"  fill="#001a05"/>
+            <polygon points="245,220 290,58 335,220"  fill="#003010"/>
+            <polygon points="370,220 425,72 480,220"  fill="#002208"/>
+            <polygon points="405,220 450,42 495,220"  fill="#001505"/>
+            <polygon points="530,220 575,98 620,220"  fill="#003010"/>
+            <polygon points="560,220 608,68 656,220"  fill="#001a05"/>
+            <polygon points="660,220 705,88 750,220"  fill="#002208"/>
+            <polygon points="690,220 740,55 790,220"  fill="#003010"/>
+            <polygon points="760,220 808,78 856,220"  fill="#001a05"/>
+            <line x1="0" y1="105" x2="900" y2="103" stroke="#00ff41" stroke-width=".3" opacity=".2"/>
+          </svg>
+          <div class="forest-lines"></div>
+          <div class="px-spot" id="pxspot"></div>
+        </div>
+        <div class="px-reveal" id="pxrev">
+          <span style="color:var(--green-dim);font-size:10px;letter-spacing:.4em;display:block;margin-bottom:5px;">FRAGMENTO RECUPERADO</span>
+          El primer fragmento está en el aire: <strong>101.101.011</strong>
+          <span style="color:var(--gray);font-size:11px;display:block;margin-top:5px;">[Binario → Decimal → Coordenada]</span>
+        </div>
+        <div class="img-cap">Fig. 0x01 — Sector Bosque Norte · Interferencia detectada · Busca el punto de origen</div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="panel" data-lbl="// contexto del enigma">
+        <div class="clue">
+          <span class="dm">// Transmisión recibida — canal encriptado</span><br><br>
+          La imagen contiene una anomalía imperceptible.<br>
+          No es ruido. Es <span class="rct">INFORMACIÓN</span>.<br><br>
+          Quien diseñó este sistema conocía la proporción que gobierna los nautilus, las galaxias y los girasoles.<br><br>
+          <span class="am">Ese mismo número define el punto de origen.</span>
+        </div>
+      </div>
+
+      <div class="panel" data-lbl="// entrada de respuesta">
+        <div class="ans-section">
+          <div class="ans-lbl">Introduce el código binario encontrado</div>
+          <div class="ans-row">
+            <input class="ans-input" id="a1" type="text" placeholder="___.___.___" maxlength="15" onkeydown="if(event.key==='Enter')chk(1)">
+            <button class="btn-chk" onclick="chk(1)">VERIFICAR ▶</button>
+          </div>
+          <div class="feedback" id="fb1"></div>
+          <button class="hint-btn" onclick="hint(1)">▶ Solicitar pista de nivel 1</button>
+          <div class="hint-box" id="h1">La proporción áurea divide el espacio en ~61.8% y ~38.2%. Aplica eso a las coordenadas X e Y de la imagen. Haz clic en ese punto exacto.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="e2">
+  <div class="nav">
+    <div class="nav-logo">PROTOCOLO 11-23</div>
+    <div class="nav-dots">
+      <div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="nav-right">
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <div class="nav-tag">EXTERNO</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <div>
+        <div class="e-num">ENIGMA 02 — TEXTO OCULTO</div>
+        <div class="e-title">EL COMENTARIO DEL ARQUITECTO</div>
+        <div class="e-desc" style="margin-top:8px;">Mis secretos no están escritos. Están <em>construidos</em>. Lo que ves no es todo lo que existe.</div>
+      </div>
+
+      <div class="panel" data-lbl="// blog del arquitecto — última entrada">
+        <div class="clue">
+          <span class="dm">ENTRADA #0x2F — ÚLTIMA ACTUALIZACIÓN: DESCONOCIDA</span><br><br>
+          Los sistemas que diseñé no fueron construidos para ser comprendidos.<br>
+          Fueron construidos para <span class="rct">PERSISTIR</span>.<br><br>
+          Si has llegado hasta aquí leyendo la superficie,<br>
+          aún no has llegado a ningún sitio.<br><br>
+          La arquitectura real se encuentra <em>entre las líneas</em>.<br>
+          No en el texto. En la <span class="rct">ESTRUCTURA</span>.<br><br>
+          <span class="dm">— El Arquitecto, transmisión final</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="panel" data-lbl="// entrada de respuesta">
+        <div class="ans-section">
+          <div class="ans-lbl">Palabra oculta encontrada en la página</div>
+          <div class="ans-row">
+            <input class="ans-input" id="a2" type="text" placeholder="__________" onkeydown="if(event.key==='Enter')chk(2)">
+            <button class="btn-chk" onclick="chk(2)">VERIFICAR ▶</button>
+          </div>
+          <div class="feedback" id="fb2"></div>
+          <button class="hint-btn" onclick="hint(2)">▶ Solicitar pista de nivel 1</button>
+          <div class="hint-box" id="h2">El texto tiene el mismo color que el fondo de la página. Selecciona con el ratón las zonas aparentemente vacías del blog — el color de selección lo hará visible. La clave tiene 8 letras y representa un concepto filosófico ligado a la autonomía individual.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="e3">
+  <div class="nav">
+    <div class="nav-logo">PROTOCOLO 11-23</div>
+    <div class="nav-dots">
+      <div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="nav-right">
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <div class="nav-tag">EXTERNO</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <div>
+        <div class="e-num">ENIGMA 03 — DECODIFICACIÓN BASE64</div>
+        <div class="e-title">EL ECO DE BASE64</div>
+        <div class="e-desc" style="margin-top:8px;">Los datos nunca mienten. Pero a veces se disfrazan de ruido para protegerse de quienes no merecen escucharlos.</div>
+      </div>
+
+      <div class="panel" data-lbl="// logs de transmisión — señal captada">
+        <div class="code-blk">
+          <span class="lbl">TRANSMISIÓN_RAW_0x03 :: CODIFICACIÓN DESCONOCIDA</span>
+          U29sbyBsb3MgcXVlIGJ1c2NhbiBlbiBsYSBvc2N1cmlkYWQsIGVuY29udHJhcsOhbiBsYSBsdXou
+        </div>
+        <div style="font-size:12px;color:var(--gray);margin-top:10px;line-height:1.7;">
+          Cadena interceptada en el canal del Arquitecto.<br>El formato es reconocible para quienes saben buscarlo.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="panel" data-lbl="// decodificador">
+        <div style="font-size:12px;color:var(--gray);letter-spacing:.1em;line-height:1.7;">
+          Utiliza la herramienta Base64 disponible en el <span style="color:var(--amber);font-weight:bold;">ARCHIVO DEL ARQUITECTO</span> para decodificar la señal.
+        </div>
+      </div>
+
+      <div class="panel" data-lbl="// entrada de respuesta">
+        <div class="ans-section">
+          <div class="ans-lbl">Última palabra del mensaje decodificado</div>
+          <div class="ans-row">
+            <input class="ans-input" id="a3" type="text" placeholder="____" onkeydown="if(event.key==='Enter')chk(3)">
+            <button class="btn-chk" onclick="chk(3)">VERIFICAR ▶</button>
+          </div>
+          <div class="feedback" id="fb3"></div>
+          <button class="hint-btn" onclick="hint(3)">▶ Solicitar pista de nivel 1</button>
+          <div class="hint-box" id="h3">Base64 convierte datos binarios en texto ASCII. Decodifica la cadena y lee la última palabra del mensaje resultante. Es sinónimo de "iluminación" en este contexto.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="e4">
+  <div class="nav">
+    <div class="nav-logo">PROTOCOLO 11-23</div>
+    <div class="nav-dots">
+      <div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="nav-right">
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <div class="nav-tag">EXTERNO</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <div>
+        <div class="e-num">ENIGMA 04 — CIFRADO VIGENÈRE</div>
+        <div class="e-title">EL SALTO DE VIGENÈRE</div>
+        <div class="e-desc" style="margin-top:8px;">Un alfabeto es una ilusión de orden. Desplázalo el número correcto de posiciones y la ilusión se disuelve.</div>
+      </div>
+
+      <div class="panel" data-lbl="// criptograma interceptado">
+        <div class="cipher-grid">
+          <div class="cblk">
+            <div class="clbl">Mensaje cifrado</div>
+            <div class="cval">EWES&nbsp;VLTD</div>
+          </div>
+          <div class="cblk">
+            <div class="clbl">Pista del Arquitecto</div>
+            <div style="font-size:13px;color:#888;margin-top:6px;line-height:1.75;">
+              "El Arquitecto tiene la llave.<br>Búscala donde dejó sus secretos."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" data-lbl="// nota narrativa" style="border-left:3px solid var(--amber);">
+        <div class="clue" style="font-size:13px;line-height:1.9;">
+          Un alfabeto es una ilusión de orden.<br>
+          Desplaza el orden el número correcto de posiciones<br>
+          y la ilusión se <span class="am">disuelve en verdad</span>.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="panel" data-lbl="// instrucciones de descifrado">
+        <ol class="steps">
+          <li>Obtén la clave del <span style="color:var(--green);">ENIGMA 02</span>.</li>
+          <li>Accede al módulo Vigenère en el <span style="color:var(--amber);">ARCHIVO DEL ARQUITECTO</span>.</li>
+          <li>Introduce el criptograma: <span style="color:var(--green);letter-spacing:.1em;">EWESVLTD</span> (sin espacio).</li>
+          <li>Introduce la clave encontrada en el Enigma 02.</li>
+          <li>Selecciona <em>Descifrar</em>. El mensaje emergerá.</li>
+        </ol>
+      </div>
+
+      <div class="panel" data-lbl="// entrada de respuesta">
+        <div class="ans-section">
+          <div class="ans-lbl">Mensaje descifrado (2 palabras)</div>
+          <div class="ans-row">
+            <input class="ans-input" id="a4" type="text" placeholder="____ ____" onkeydown="if(event.key==='Enter')chk(4)">
+            <button class="btn-chk" onclick="chk(4)">VERIFICAR ▶</button>
+          </div>
+          <div class="feedback" id="fb4"></div>
+          <button class="hint-btn" onclick="hint(4)">▶ Solicitar pista de nivel 1</button>
+          <div class="hint-box" id="h4">Vigenère usa una clave de texto que se repite. Con la clave correcta de 8 letras del Enigma 02, el mensaje de 8 caracteres se convierte en 2 palabras con sentido filosófico.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="e5">
+  <div class="nav">
+    <div class="nav-logo">PROTOCOLO 11-23</div>
+    <div class="nav-dots">
+      <div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div>
+    </div>
+    <div class="nav-right">
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <div class="nav-tag">EXTERNO</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <div>
+        <div class="e-num">ENIGMA 05 — CIFRADO HISTÓRICO</div>
+        <div class="e-title">LA MÁQUINA ENIGMA</div>
+        <div class="e-desc" style="margin-top:8px;">En 1943, una máquina guardó los secretos de una guerra. Esta noche, guarda el tuyo.</div>
+      </div>
+
+      <div class="panel" data-lbl="// directiva operacional — sector 11-23" style="border-left:3px solid var(--amber);">
+        <div class="clue" style="font-size:13px;line-height:1.95;color:#bbb;">
+          <span style="color:var(--amber);font-size:10px;letter-spacing:.4em;display:block;margin-bottom:8px;">NIVEL MÁXIMO — USO ÚNICO</span>
+          La máquina no miente. La máquina no perdona errores.<br>
+          Un rotor fuera de posición y el mensaje se convierte en caos.<br><br>
+          El caos no es nuestro enemigo. El caos es nuestro <em>filtro</em>.<br>
+          Solo los dignos configuran correctamente.
+        </div>
+      </div>
+      </div>
+
+    <div class="col-r">
+      <div class="panel" data-lbl="// configuración enigma M3">
+        <div class="rotor-grid">
+          <div class="rotor"><div class="rlbl">Rotor I</div><div class="rlet">C</div></div>
+          <div class="rotor"><div class="rlbl">Rotor II</div><div class="rlet">A</div></div>
+          <div class="rotor"><div class="rlbl">Rotor III</div><div class="rlet">T</div></div>
+        </div>
+        <table class="cfg-table" style="margin-top:14px;">
+          <tr><td>Modelo</td><td>Enigma M3</td></tr>
+          <tr><td>Ring Setting</td><td>01 — 01 — 01</td></tr>
+          <tr><td>Reflector</td><td>B (UKW-B)</td></tr>
+          <tr><td>Plugboard</td><td>Sin conexiones</td></tr>
+          <tr><td>Mensaje cifrado</td><td style="color:var(--amber);letter-spacing:.15em;">VMZDI</td></tr>
+        </table>
+      </div>
+
+      <div class="panel" data-lbl="// entrada de respuesta">
+        <div class="ans-section">
+          <div class="ans-lbl">Palabra descifrada por la Máquina Enigma</div>
+          <div class="ans-row">
+            <input class="ans-input" id="a5" type="text" placeholder="_____" onkeydown="if(event.key==='Enter')chk(5)">
+            <button class="btn-chk" onclick="chk(5)">VERIFICAR ▶</button>
+          </div>
+          <div class="feedback" id="fb5"></div>
+          <button class="hint-btn" onclick="hint(5)">▶ Solicitar pista de nivel 1</button>
+          <div class="hint-box" id="h5">La palabra es un color. Específicamente, el color de la ausencia total de luz. Verifica que los rotores estén en orden I-II-III y posiciones C, A, T.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="e6">
+  <div class="nav">
+    <div class="nav-logo">PROTOCOLO 11-23</div>
+    <div class="nav-dots">
+      <div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div>
+    </div>
+    <div class="nav-right">
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <div class="nav-tag">FASE FINAL</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <div>
+        <div class="e-num">ENIGMA 06 — LÓGICA COMBINATORIA — FASE FINAL</div>
+        <div class="e-title">LA PUERTA DEL SILENCIO</div>
+        <div class="e-desc" style="margin-top:8px;">Todo lo que has descifrado converge aquí. El camino dejó sus huellas en ti. Ahora combínalas.</div>
+      </div>
+
+      <div class="panel" data-lbl="// síntesis de fragmentos">
+        <div class="clue" style="font-size:13px;line-height:1.9;">
+          Has recorrido las capas del Protocolo.<br>
+          Cada enigma dejó una palabra.<br>
+          La secuencia: <span class="am">(E04) + (E03) + (E05)</span>
+        </div>
+        <div class="word-tiles" style="margin-top:14px;">
+          <div class="wtile">
+            <div class="wlbl">ENIGMA 04</div>
+            <div class="wval">TODO ESTÁ</div>
+          </div>
+          <div class="wtile">
+            <div class="wlbl">ENIGMA 03</div>
+            <div class="wval">LUZ</div>
+          </div>
+          <div class="wtile-wide">
+            <div><div class="wlbl">ENIGMA 05</div><div class="wval">NEGRO</div></div>
+            <div style="color:var(--gray);font-size:12px;">→ Frase narrativa obtenida del camino</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="panel" data-lbl="// contexto final" style="border-left:3px solid var(--amber);">
+        <div class="clue" style="font-size:13px;line-height:2;color:#bbb;">
+          Pero la Puerta del Silencio no responde a fragmentos.<br>
+          Responde a quien conoce el <span class="am">nombre completo del Protocolo</span>.<br><br>
+          El nombre de quienes demostraron que lo imposible<br>
+          no era imposible. Solo estaba <span style="color:var(--green);">esperando ser descifrado</span>.
+        </div>
+      </div>
+
+      <div class="panel" data-lbl="// candado final — contraseña de acceso" style="border-color:var(--green-dim);">
+        <div style="font-size:12px;color:var(--gray);letter-spacing:.1em;margin-bottom:14px;line-height:1.75;">
+          Introduce la contraseña final para completar el Protocolo 11-23.<br>
+          <span style="color:var(--amber);">Una sola contraseña. Una sola puerta.</span>
+        </div>
+        <div class="ans-section">
+          <div class="ans-lbl">CONTRASEÑA DE ACCESO FINAL</div>
+          <div class="ans-row">
+            <input class="ans-input" id="afin" type="text" placeholder="___________"
+              onkeydown="if(event.key==='Enter')chkFin()"
+              style="letter-spacing:.3em;font-size:20px;">
+            <button class="btn-chk" onclick="chkFin()" style="border-color:var(--green);color:var(--green);">ACCEDER ▶</button>
+          </div>
+          <div class="feedback" id="fbfin"></div>
+          <button class="hint-btn" onclick="hint(6)">▶ Solicitar pista final</button>
+          <div class="hint-box" id="h6">El nombre de quienes son capaces de descifrar lo indescifrable. Los que llegaron hasta aquí. ¿Cómo se llamaría el mundo a sí mismo si supiera que puede romper cualquier código?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="final">
+  <div class="seal">
+    <div class="seal-inner">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <polygon points="35,6 41,22 58,22 45,33 50,50 35,40 20,50 25,33 12,22 29,22" fill="none" stroke="#00ff41" stroke-width="1.5"/>
+      </svg>
+    </div>
+  </div>
+  <div class="final-title">ACCESO CONCEDIDO</div>
+  <div class="stamp">PROTOCOLO 11-23 — COMPLETADO</div>
+  <div class="final-msg">
+    Bienvenidos al otro lado del espejo.<br>
+    Han demostrado que la realidad tiene capas y que <span class="hi">saben cómo pelarlas</span>.<br><br>
+    El Protocolo 11-23 no termina aquí.<br>
+    Termina cuando dejen de necesitar que alguien les diga <span class="hi">dónde buscar</span>.<br>
+    <span style="color:var(--gray);font-size:13px;">— El Arquitecto, en algún lugar que no está en ningún mapa</span>
+  </div>
+  <div class="prog-wrap"><div class="prog-bar" id="progbar"></div></div>
+  <div class="stats">
+    TIEMPO: <span id="ftime">--:--</span>&nbsp;&nbsp;·&nbsp;&nbsp;
+    FALLOS: <span id="fcount" style="color:var(--red);">0</span>&nbsp;&nbsp;·&nbsp;&nbsp;
+    PISTAS: <span id="hcount" style="color:var(--amber);">0</span>
+  </div>
+  <button class="btn-start" style="margin-top:28px;font-size:13px;padding:12px 40px;" onclick="restart()">↺ REINICIAR PROTOCOLO</button>
+</div>
+
+</div><script>
+// ── STATE ──
+let cur='boot', secs=0, tiv=null, fails=0, hints=0;
+
+const ANS={
+  1:['101.101.011','101101011'],
+  2:['libertad'],
+  3:['luz'],
+  4:['todo esta','todoesta','todo está','todoestá'],
+  5:['negro'],
+  fin:['11-23-04-04']
+};
+
+// ── SCALE STAGE ──
+function scaleStage(){
+  const s=document.getElementById('stage');
+  const ww=window.innerWidth, wh=window.innerHeight;
+  const scale=Math.min(ww/1920, wh/1080);
+  s.style.transform=`translate(-50%,-50%) scale(${scale})`;
+}
+window.addEventListener('resize',scaleStage);
+scaleStage();
+
+// ── NAVIGATE ──
+function go(id){
+  document.getElementById(cur).classList.remove('active');
+  document.getElementById(id).classList.add('active');
+  cur=id;
+  flash();
+  if(id==='e1'&&!tiv) startTimer();
+}
+
+function flash(){
+  const el=document.getElementById('static');
+  el.classList.remove('go');
+  void el.offsetWidth;
+  el.classList.add('go');
+  setTimeout(()=>el.classList.remove('go'),220);
+}
+
+// ── TIMER ──
+function startTimer(){
+  tiv=setInterval(()=>{
+    secs++;
+    const m=String(Math.floor(secs/60)).padStart(2,'0');
+    const s=String(secs%60).padStart(2,'0');
+    const el=document.getElementById('tmr');
+    if(el) el.textContent=m+':'+s;
+  },1000);
+}
+function fmtTime(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+
+// ── FOREST CLICK ──
+function clickForest(e){
+  const r=document.getElementById('fimg').getBoundingClientRect();
+  const px=(e.clientX-r.left)/r.width;
+  const py=(e.clientY-r.top)/r.height;
+  if(px>.55&&px<.68&&py>.28&&py<.48){ showPixel(); }
+}
+function showPixel(){
+  document.getElementById('pxrev').style.display='block';
+  document.getElementById('a1').value='101.101.011';
+  flash();
+}
+
+// ── HINTS ──
+function hint(n){
+  const id=n===6?'h6':'h'+n;
+  const el=document.getElementById(id);
+  if(!el.classList.contains('on')){ el.classList.add('on'); hints++; }
+  else el.classList.remove('on');
+}
+
+// ── CHECK ANSWERS ──
+function chk(n){
+  const inp=document.getElementById('a'+n);
+  const fb=document.getElementById('fb'+n);
+  const v=inp.value.trim().toLowerCase();
+  if(ANS[n].includes(v)){
+    inp.classList.remove('err'); inp.classList.add('ok');
+    fb.textContent='✓ CORRECTO — FRAGMENTO VALIDADO';
+    fb.className='feedback ok';
+    flash();
+    setTimeout(()=>go('e'+(n+1)),750);
+  } else {
+    inp.classList.remove('ok'); inp.classList.add('err');
+    fb.textContent='✗ INCORRECTO — EL PROTOCOLO RECHAZA RESPUESTAS IMPRECISAS';
+    fb.className='feedback err';
+    fails++;
+    setTimeout(()=>inp.classList.remove('err'),500);
+  }
+}
+
+function chkFin(){
+  const inp=document.getElementById('afin');
+  const fb=document.getElementById('fbfin');
+  const v=inp.value.trim().toLowerCase();
+  if(ANS.fin.includes(v)){
+    inp.classList.add('ok');
+    fb.textContent='✓ CONTRASEÑA ACEPTADA — ACCESO CONCEDIDO';
+    fb.className='feedback ok';
+    clearInterval(tiv);
+    flash();
+    setTimeout(()=>{
+      go('final');
+      document.getElementById('ftime').textContent=fmtTime(secs);
+      document.getElementById('fcount').textContent=fails;
+      document.getElementById('hcount').textContent=hints;
+      let w=0;
+      const p=document.getElementById('progbar');
+      const iv=setInterval(()=>{ w=Math.min(100,w+2); p.style.width=w+'%'; if(w>=100)clearInterval(iv); },18);
+    },600);
+  } else {
+    inp.classList.add('err');
+    fb.textContent='✗ ACCESO DENEGADO — LA PUERTA PERMANECE SELLADA';
+    fb.className='feedback err';
+    fails++;
+    setTimeout(()=>inp.classList.remove('err'),500);
+  }
+}
+
+// ── RESTART ──
+function restart(){
+  secs=0; fails=0; hints=0;
+  clearInterval(tiv); tiv=null;
+  document.querySelectorAll('.ans-input').forEach(e=>{e.value='';e.classList.remove('ok','err');});
+  document.querySelectorAll('.feedback').forEach(e=>e.textContent='');
+  document.querySelectorAll('.hint-box').forEach(e=>e.classList.remove('on'));
+  document.getElementById('pxrev').style.display='none';
+  go('boot');
+}
+</script>
+</body>
+</html>
