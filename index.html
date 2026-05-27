@@ -462,7 +462,7 @@ body::after {
 <div id="static"></div>
 
 <div id="scale-notice">
-  <div>ROTACIÓN NO COMPATIBLE<br><span style="font-size:12px;color:var(--gray);margin-top:8px;display:block">El Protocolo requiere orientación horizontal</span></div>
+  <div id="rotMsg">ROTACIÓN NO COMPATIBLE<br><span style="font-size:12px;color:var(--gray);margin-top:8px;display:block">El Protocolo requiere orientación horizontal</span></div>
 </div>
 
 <div id="stage">
@@ -470,15 +470,15 @@ body::after {
 <div class="screen active" id="boot">
   <div class="boot-bg"></div>
   <div class="boot-inner">
-    <div class="boot-sys">▌ SISTEMA ÓMEGA — NODO 11-23 ▌</div>
+    <div class="boot-sys" id="bootSys">▌ SISTEMA ÓMEGA — NODO 11-23 ▌</div>
     <div class="glitch-wrap">
-      <span class="gtitle gtitle-main" data-t="PROTOCOLO">PROTOCOLO</span>
-      <span class="gtitle gtitle-num" data-t="11-23">11-23</span>
+      <span class="gtitle gtitle-main" id="bootTitle1" data-t="PROTOCOLO">PROTOCOLO</span>
+      <span class="gtitle gtitle-num" id="bootTitle2" data-t="11-23">11-23</span>
     </div>
-    <div class="boot-sub">CLASIFICACIÓN ÓMEGA · ACCESO RESTRINGIDO</div>
+    <div class="boot-sub" id="bootSub">CLASIFICACIÓN ÓMEGA · ACCESO RESTRINGIDO</div>
 
-    <div class="term-box">
-      <div class="term-txt">
+    <div class="term-box" id="termBox">
+      <div class="term-txt" id="bootMsg">
         <span class="dm">// INICIO DE TRANSMISIÓN — 03:41:17 UTC</span><br><br>
         Han encontrado este canal porque <span class="hi">merecen encontrarlo</span>.<br>
         El mundo opera sobre dos capas: la que se muestra y la que <span class="am">sostiene todo lo demás</span>.<br><br>
@@ -492,6 +492,7 @@ body::after {
     </div>
 
     <button class="btn-start" onclick="go('e1')">▶ INICIAR PROTOCOLO</button>
+    <button class="btn-start" id="langBtn" onclick="switchLang()" style="margin-top:16px;background:rgba(255,176,0,0.1);border-color:var(--amber);color:var(--amber);">🌐 ENGLISH VERSION</button>
   </div>
 </div>
 
@@ -507,7 +508,7 @@ body::after {
       <div class="dot" id="d6a"></div>
     </div>
     <div class="nav-right">
-      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav" id="archNav">▶ Archivo del Arquitecto</a>
       <div class="nav-tag" id="tmr">00:00</div>
     </div>
   </div>
@@ -515,9 +516,9 @@ body::after {
   <div class="cols">
     <div class="col-l">
       <div>
-        <div class="e-num">ENIGMA 01 — ESTEGANOGRAFÍA</div>
-        <div class="e-title">EL PÍXEL DE LA VERDAD</div>
-        <div class="e-desc" style="margin-top:8px;">La realidad tiene capas. No toda la información se escribe. Algunas cosas se <em>ocultan</em> en el punto donde la naturaleza las colocaría.</div>
+        <div class="e-num" id="e1_num">ENIGMA 01 — ESTEGANOGRAFÍA</div>
+        <div class="e-title" id="e1_title">EL PÍXEL DE LA VERDAD</div>
+        <div class="e-desc" id="e1_desc" style="margin-top:8px;">La realidad tiene capas. No toda la información se escribe. Algunas cosas se <em>ocultan</em> en el punto donde la naturaleza las colocaría.</div>
       </div>
 
       <div class="panel" data-lbl="// transmisión visual">
@@ -541,17 +542,16 @@ body::after {
           <div class="px-spot" id="pxspot"></div>
         </div>
         <div class="px-reveal" id="pxrev">
-          <span style="color:var(--green-dim);font-size:10px;letter-spacing:.4em;display:block;margin-bottom:5px;">FRAGMENTO RECUPERADO</span>
-          El primer fragmento está en el aire: <strong>101.101.011</strong>
-          <span style="color:var(--gray);font-size:11px;display:block;margin-top:5px;">[Binario → Decimal → Coordenada]</span>
+          <span style="color:var(--green-dim);font-size:10px;letter-spacing:.4em;display:block;margin-bottom:5px;" id="e1_recover">FRAGMENTO RECUPERADO</span>
+          <span id="e1_hint_msg">El primer fragmento está en el aire: <strong>101.101.011</strong><span style="color:var(--gray);font-size:11px;display:block;margin-top:5px;">[Binario → Decimal → Coordenada]</span></span>
         </div>
-        <div class="img-cap">Fig. 0x01 — Sector Bosque Norte · Interferencia detectada · Busca el punto de origen</div>
+        <div class="img-cap" id="e1_caption">Fig. 0x01 — Sector Bosque Norte · Interferencia detectada · Busca el punto de origen</div>
       </div>
     </div>
 
     <div class="col-r">
       <div class="panel" data-lbl="// contexto del enigma">
-        <div class="clue">
+        <div class="clue" id="e1_clue">
           <span class="dm">// Transmisión recibida — canal encriptado</span><br><br>
           La imagen contiene una anomalía imperceptible.<br>
           No es ruido. Es <span class="rct">INFORMACIÓN</span>.<br><br>
@@ -562,13 +562,13 @@ body::after {
 
       <div class="panel" data-lbl="// entrada de respuesta">
         <div class="ans-section">
-          <div class="ans-lbl">Introduce el código binario encontrado</div>
+          <div class="ans-lbl" id="e1_label">Introduce el código binario encontrado</div>
           <div class="ans-row">
             <input class="ans-input" id="a1" type="text" placeholder="___.___.___" maxlength="15" onkeydown="if(event.key==='Enter')chk(1)">
             <button class="btn-chk" onclick="chk(1)">VERIFICAR ▶</button>
           </div>
           <div class="feedback" id="fb1"></div>
-          <button class="hint-btn" onclick="hint(1)">▶ Solicitar pista de nivel 1</button>
+          <button class="hint-btn" onclick="hint(1)" id="hintBtn1">▶ Solicitar pista de nivel 1</button>
           <div class="hint-box" id="h1">La proporción áurea divide el espacio en ~61.8% y ~38.2%. Aplica eso a las coordenadas X e Y de la imagen. Haz clic en ese punto exacto.</div>
         </div>
       </div>
@@ -584,7 +584,7 @@ body::after {
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
     </div>
     <div class="nav-right">
-      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav" id="archNav">▶ Archivo del Arquitecto</a>
       <div class="nav-tag">EXTERNO</div>
     </div>
   </div>
@@ -592,13 +592,13 @@ body::after {
   <div class="cols">
     <div class="col-l">
       <div>
-        <div class="e-num">ENIGMA 02 — TEXTO OCULTO</div>
-        <div class="e-title">EL COMENTARIO DEL ARQUITECTO</div>
-        <div class="e-desc" style="margin-top:8px;">Mis secretos no están escritos. Están <em>construidos</em>. Lo que ves no es todo lo que existe.</div>
+        <div class="e-num" id="e2_num">ENIGMA 02 — TEXTO OCULTO</div>
+        <div class="e-title" id="e2_title">EL COMENTARIO DEL ARQUITECTO</div>
+        <div class="e-desc" id="e2_desc" style="margin-top:8px;">Mis secretos no están escritos. Están <em>construidos</em>. Lo que ves no es todo lo que existe.</div>
       </div>
 
       <div class="panel" data-lbl="// blog del arquitecto — última entrada">
-        <div class="clue">
+        <div class="clue" id="e2_clue">
           <span class="dm">ENTRADA #0x2F — ÚLTIMA ACTUALIZACIÓN: DESCONOCIDA</span><br><br>
           Los sistemas que diseñé no fueron construidos para ser comprendidos.<br>
           Fueron construidos para <span class="rct">PERSISTIR</span>.<br><br>
@@ -614,13 +614,13 @@ body::after {
     <div class="col-r">
       <div class="panel" data-lbl="// entrada de respuesta">
         <div class="ans-section">
-          <div class="ans-lbl">Palabra oculta encontrada en la página</div>
+          <div class="ans-lbl" id="e2_label">Palabra oculta encontrada en la página</div>
           <div class="ans-row">
             <input class="ans-input" id="a2" type="text" placeholder="__________" onkeydown="if(event.key==='Enter')chk(2)">
             <button class="btn-chk" onclick="chk(2)">VERIFICAR ▶</button>
           </div>
           <div class="feedback" id="fb2"></div>
-          <button class="hint-btn" onclick="hint(2)">▶ Solicitar pista de nivel 1</button>
+          <button class="hint-btn" onclick="hint(2)" id="hintBtn2">▶ Solicitar pista de nivel 1</button>
           <div class="hint-box" id="h2">El texto tiene el mismo color que el fondo de la página. Selecciona con el ratón las zonas aparentemente vacías del blog — el color de selección lo hará visible. La clave tiene 8 letras y representa un concepto filosófico ligado a la autonomía individual.</div>
         </div>
       </div>
@@ -636,7 +636,7 @@ body::after {
       <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
     </div>
     <div class="nav-right">
-      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav" id="archNav">▶ Archivo del Arquitecto</a>
       <div class="nav-tag">EXTERNO</div>
     </div>
   </div>
@@ -644,9 +644,9 @@ body::after {
   <div class="cols">
     <div class="col-l">
       <div>
-        <div class="e-num">ENIGMA 03 — DECODIFICACIÓN BASE64</div>
-        <div class="e-title">EL ECO DE BASE64</div>
-        <div class="e-desc" style="margin-top:8px;">Los datos nunca mienten. Pero a veces se disfrazan de ruido para protegerse de quienes no merecen escucharlos.</div>
+        <div class="e-num" id="e3_num">ENIGMA 03 — DECODIFICACIÓN BASE64</div>
+        <div class="e-title" id="e3_title">EL ECO DE BASE64</div>
+        <div class="e-desc" id="e3_desc" style="margin-top:8px;">Los datos nunca mienten. Pero a veces se disfrazan de ruido para protegerse de quienes no merecen escucharlos.</div>
       </div>
 
       <div class="panel" data-lbl="// logs de transmisión — señal captada">
@@ -654,7 +654,7 @@ body::after {
           <span class="lbl">TRANSMISIÓN_RAW_0x03 :: CODIFICACIÓN DESCONOCIDA</span>
           U29sbyBsb3MgcXVlIGJ1c2NhbiBlbiBsYSBvc2N1cmlkYWQsIGVuY29udHJhcsOhbiBsYSBsdXou
         </div>
-        <div style="font-size:12px;color:var(--gray);margin-top:10px;line-height:1.7;">
+        <div style="font-size:12px;color:var(--gray);margin-top:10px;line-height:1.7;" id="e3_note">
           Cadena interceptada en el canal del Arquitecto.<br>El formato es reconocible para quienes saben buscarlo.
         </div>
       </div>
@@ -662,20 +662,20 @@ body::after {
 
     <div class="col-r">
       <div class="panel" data-lbl="// decodificador">
-        <div style="font-size:12px;color:var(--gray);letter-spacing:.1em;line-height:1.7;">
+        <div style="font-size:12px;color:var(--gray);letter-spacing:.1em;line-height:1.7;" id="e3_info">
           Utiliza la herramienta Base64 disponible en el <span style="color:var(--amber);font-weight:bold;">ARCHIVO DEL ARQUITECTO</span> para decodificar la señal.
         </div>
       </div>
 
       <div class="panel" data-lbl="// entrada de respuesta">
         <div class="ans-section">
-          <div class="ans-lbl">Última palabra del mensaje decodificado</div>
+          <div class="ans-lbl" id="e3_label">Última palabra del mensaje decodificado</div>
           <div class="ans-row">
             <input class="ans-input" id="a3" type="text" placeholder="____" onkeydown="if(event.key==='Enter')chk(3)">
             <button class="btn-chk" onclick="chk(3)">VERIFICAR ▶</button>
           </div>
           <div class="feedback" id="fb3"></div>
-          <button class="hint-btn" onclick="hint(3)">▶ Solicitar pista de nivel 1</button>
+          <button class="hint-btn" onclick="hint(3)" id="hintBtn3">▶ Solicitar pista de nivel 1</button>
           <div class="hint-box" id="h3">Base64 convierte datos binarios en texto ASCII. Decodifica la cadena y lee la última palabra del mensaje resultante. Es sinónimo de "iluminación" en este contexto.</div>
         </div>
       </div>
@@ -691,7 +691,7 @@ body::after {
       <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
     </div>
     <div class="nav-right">
-      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav" id="archNav">▶ Archivo del Arquitecto</a>
       <div class="nav-tag">EXTERNO</div>
     </div>
   </div>
@@ -699,20 +699,20 @@ body::after {
   <div class="cols">
     <div class="col-l">
       <div>
-        <div class="e-num">ENIGMA 04 — CIFRADO VIGENÈRE</div>
-        <div class="e-title">EL SALTO DE VIGENÈRE</div>
-        <div class="e-desc" style="margin-top:8px;">Un alfabeto es una ilusión de orden. Desplázalo el número correcto de posiciones y la ilusión se disuelve.</div>
+        <div class="e-num" id="e4_num">ENIGMA 04 — CIFRADO VIGENÈRE</div>
+        <div class="e-title" id="e4_title">EL SALTO DE VIGENÈRE</div>
+        <div class="e-desc" id="e4_desc" style="margin-top:8px;">Un alfabeto es una ilusión de orden. Desplázalo el número correcto de posiciones y la ilusión se disuelve.</div>
       </div>
 
       <div class="panel" data-lbl="// criptograma interceptado">
         <div class="cipher-grid">
           <div class="cblk">
-            <div class="clbl">Mensaje cifrado</div>
+            <div class="clbl" id="e4_cipher_lbl">Mensaje cifrado</div>
             <div class="cval">EWES&nbsp;VLTD</div>
           </div>
           <div class="cblk">
-            <div class="clbl">Pista del Arquitecto</div>
-            <div style="font-size:13px;color:#888;margin-top:6px;line-height:1.75;">
+            <div class="clbl" id="e4_hint_lbl">Pista del Arquitecto</div>
+            <div id="e4_hint_text" style="font-size:13px;color:#888;margin-top:6px;line-height:1.75;">
               "El Arquitecto tiene la llave.<br>Búscala donde dejó sus secretos."
             </div>
           </div>
@@ -720,7 +720,7 @@ body::after {
       </div>
 
       <div class="panel" data-lbl="// nota narrativa" style="border-left:3px solid var(--amber);">
-        <div class="clue" style="font-size:13px;line-height:1.9;">
+        <div class="clue" id="e4_note" style="font-size:13px;line-height:1.9;">
           Un alfabeto es una ilusión de orden.<br>
           Desplaza el orden el número correcto de posiciones<br>
           y la ilusión se <span class="am">disuelve en verdad</span>.
@@ -730,7 +730,7 @@ body::after {
 
     <div class="col-r">
       <div class="panel" data-lbl="// instrucciones de descifrado">
-        <ol class="steps">
+        <ol class="steps" id="e4_steps">
           <li>Obtén la clave del <span style="color:var(--green);">ENIGMA 02</span>.</li>
           <li>Accede al módulo Vigenère en el <span style="color:var(--amber);">ARCHIVO DEL ARQUITECTO</span>.</li>
           <li>Introduce el criptograma: <span style="color:var(--green);letter-spacing:.1em;">EWESVLTD</span> (sin espacio).</li>
@@ -741,13 +741,13 @@ body::after {
 
       <div class="panel" data-lbl="// entrada de respuesta">
         <div class="ans-section">
-          <div class="ans-lbl">Mensaje descifrado (2 palabras)</div>
+          <div class="ans-lbl" id="e4_label">Mensaje descifrado (2 palabras)</div>
           <div class="ans-row">
             <input class="ans-input" id="a4" type="text" placeholder="____ ____" onkeydown="if(event.key==='Enter')chk(4)">
             <button class="btn-chk" onclick="chk(4)">VERIFICAR ▶</button>
           </div>
           <div class="feedback" id="fb4"></div>
-          <button class="hint-btn" onclick="hint(4)">▶ Solicitar pista de nivel 1</button>
+          <button class="hint-btn" onclick="hint(4)" id="hintBtn4">▶ Solicitar pista de nivel 1</button>
           <div class="hint-box" id="h4">Vigenère usa una clave de texto que se repite. Con la clave correcta de 8 letras del Enigma 02, el mensaje de 8 caracteres se convierte en 2 palabras con sentido filosófico.</div>
         </div>
       </div>
@@ -764,7 +764,7 @@ body::after {
       <div class="dot active"></div><div class="dot"></div>
     </div>
     <div class="nav-right">
-      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav" id="archNav">▶ Archivo del Arquitecto</a>
       <div class="nav-tag">EXTERNO</div>
     </div>
   </div>
@@ -772,14 +772,14 @@ body::after {
   <div class="cols">
     <div class="col-l">
       <div>
-        <div class="e-num">ENIGMA 05 — CIFRADO HISTÓRICO</div>
-        <div class="e-title">LA MÁQUINA ENIGMA</div>
-        <div class="e-desc" style="margin-top:8px;">En 1943, una máquina guardó los secretos de una guerra. Esta noche, guarda el tuyo.</div>
+        <div class="e-num" id="e5_num">ENIGMA 05 — CIFRADO HISTÓRICO</div>
+        <div class="e-title" id="e5_title">LA MÁQUINA ENIGMA</div>
+        <div class="e-desc" id="e5_desc" style="margin-top:8px;">En 1943, una máquina guardó los secretos de una guerra. Esta noche, guarda el tuyo.</div>
       </div>
 
       <div class="panel" data-lbl="// directiva operacional — sector 11-23" style="border-left:3px solid var(--amber);">
-        <div class="clue" style="font-size:13px;line-height:1.95;color:#bbb;">
-          <span style="color:var(--amber);font-size:10px;letter-spacing:.4em;display:block;margin-bottom:8px;">NIVEL MÁXIMO — USO ÚNICO</span>
+        <div class="clue" id="e5_note" style="font-size:13px;line-height:1.95;color:#bbb;">
+          <span style="color:var(--amber);font-size:10px;letter-spacing:.4em;display:block;margin-bottom:8px;" id="e5_level">NIVEL MÁXIMO — USO ÚNICO</span>
           La máquina no miente. La máquina no perdona errores.<br>
           Un rotor fuera de posición y el mensaje se convierte en caos.<br><br>
           El caos no es nuestro enemigo. El caos es nuestro <em>filtro</em>.<br>
@@ -791,28 +791,28 @@ body::after {
     <div class="col-r">
       <div class="panel" data-lbl="// configuración enigma M3">
         <div class="rotor-grid">
-          <div class="rotor"><div class="rlbl">Rotor I</div><div class="rlet">C</div></div>
-          <div class="rotor"><div class="rlbl">Rotor II</div><div class="rlet">A</div></div>
-          <div class="rotor"><div class="rlbl">Rotor III</div><div class="rlet">T</div></div>
+          <div class="rotor"><div class="rlbl" id="e5_rot1">Rotor I</div><div class="rlet">C</div></div>
+          <div class="rotor"><div class="rlbl" id="e5_rot2">Rotor II</div><div class="rlet">A</div></div>
+          <div class="rotor"><div class="rlbl" id="e5_rot3">Rotor III</div><div class="rlet">T</div></div>
         </div>
         <table class="cfg-table" style="margin-top:14px;">
-          <tr><td>Modelo</td><td>Enigma M3</td></tr>
-          <tr><td>Ring Setting</td><td>01 — 01 — 01</td></tr>
-          <tr><td>Reflector</td><td>B (UKW-B)</td></tr>
-          <tr><td>Plugboard</td><td>Sin conexiones</td></tr>
-          <tr><td>Mensaje cifrado</td><td style="color:var(--amber);letter-spacing:.15em;">VMZDI</td></tr>
+          <tr><td id="e5_model_lbl">Modelo</td><td>Enigma M3</td></tr>
+          <tr><td id="e5_ring_lbl">Ring Setting</td><td>01 — 01 — 01</td></tr>
+          <tr><td id="e5_ref_lbl">Reflector</td><td>B (UKW-B)</td></tr>
+          <tr><td id="e5_plug_lbl">Plugboard</td><td id="e5_plug_val">Sin conexiones</td></tr>
+          <tr><td id="e5_msg_lbl">Mensaje cifrado</td><td style="color:var(--amber);letter-spacing:.15em;">VMZDI</td></tr>
         </table>
       </div>
 
       <div class="panel" data-lbl="// entrada de respuesta">
         <div class="ans-section">
-          <div class="ans-lbl">Palabra descifrada por la Máquina Enigma</div>
+          <div class="ans-lbl" id="e5_label">Palabra descifrada por la Máquina Enigma</div>
           <div class="ans-row">
             <input class="ans-input" id="a5" type="text" placeholder="_____" onkeydown="if(event.key==='Enter')chk(5)">
             <button class="btn-chk" onclick="chk(5)">VERIFICAR ▶</button>
           </div>
           <div class="feedback" id="fb5"></div>
-          <button class="hint-btn" onclick="hint(5)">▶ Solicitar pista de nivel 1</button>
+          <button class="hint-btn" onclick="hint(5)" id="hintBtn5">▶ Solicitar pista de nivel 1</button>
           <div class="hint-box" id="h5">La palabra es un color. Específicamente, el color de la ausencia total de luz. Verifica que los rotores estén en orden I-II-III y posiciones C, A, T.</div>
         </div>
       </div>
@@ -829,7 +829,7 @@ body::after {
       <div class="dot done"></div><div class="dot active"></div>
     </div>
     <div class="nav-right">
-      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav">▶ Archivo del Arquitecto</a>
+      <a href="https://sites.google.com/view/protocolo11-23/blog-del-arquitecto" target="_blank" class="btn-arch-nav" id="archNav">▶ Archivo del Arquitecto</a>
       <div class="nav-tag">FASE FINAL</div>
     </div>
   </div>
@@ -837,13 +837,13 @@ body::after {
   <div class="cols">
     <div class="col-l">
       <div>
-        <div class="e-num">ENIGMA 06 — LÓGICA COMBINATORIA — FASE FINAL</div>
-        <div class="e-title">LA PUERTA DEL SILENCIO</div>
-        <div class="e-desc" style="margin-top:8px;">Todo lo que has descifrado converge aquí. El camino dejó sus huellas en ti. Ahora combínalas.</div>
+        <div class="e-num" id="e6_num">ENIGMA 06 — LÓGICA COMBINATORIA — FASE FINAL</div>
+        <div class="e-title" id="e6_title">LA PUERTA DEL SILENCIO</div>
+        <div class="e-desc" id="e6_desc" style="margin-top:8px;">Todo lo que has descifrado converge aquí. El camino dejó sus huellas en ti. Ahora combínalas.</div>
       </div>
 
       <div class="panel" data-lbl="// síntesis de fragmentos">
-        <div class="clue" style="font-size:13px;line-height:1.9;">
+        <div class="clue" id="e6_msg" style="font-size:13px;line-height:1.9;">
           Solo mira hacia arriba
         </div>
       </div>
@@ -851,7 +851,7 @@ body::after {
 
     <div class="col-r">
       <div class="panel" data-lbl="// contexto final" style="border-left:3px solid var(--amber);">
-        <div class="clue" style="font-size:13px;line-height:2;color:#bbb;">
+        <div class="clue" id="e6_context" style="font-size:13px;line-height:2;color:#bbb;">
           Pero la Puerta del Silencio no responde a fragmentos.<br>
           Responde a quien conoce el <span class="am">nombre completo del Protocolo</span>.<br><br>
           El nombre de quienes demostraron que lo imposible<br>
@@ -860,12 +860,12 @@ body::after {
       </div>
 
       <div class="panel" data-lbl="// candado final — contraseña de acceso" style="border-color:var(--green-dim);">
-        <div style="font-size:12px;color:var(--gray);letter-spacing:.1em;margin-bottom:14px;line-height:1.75;">
+        <div style="font-size:12px;color:var(--gray);letter-spacing:.1em;margin-bottom:14px;line-height:1.75;" id="e6_final_intro">
           Introduce la contraseña final para completar el Protocolo 11-23.<br>
           <span style="color:var(--amber);">Una sola contraseña. Una sola puerta.</span>
         </div>
         <div class="ans-section">
-          <div class="ans-lbl">CONTRASEÑA DE ACCESO FINAL</div>
+          <div class="ans-lbl" id="e6_label">CONTRASEÑA DE ACCESO FINAL</div>
           <div class="ans-row">
             <input class="ans-input" id="afin" type="text" placeholder="___________"
               onkeydown="if(event.key==='Enter')chkFin()"
@@ -873,7 +873,7 @@ body::after {
             <button class="btn-chk" onclick="chkFin()" style="border-color:var(--green);color:var(--green);">ACCEDER ▶</button>
           </div>
           <div class="feedback" id="fbfin"></div>
-          <button class="hint-btn" onclick="hint(6)">▶ Solicitar pista final</button>
+          <button class="hint-btn" onclick="hint(6)" id="hintBtn6">▶ Solicitar pista final</button>
           <div class="hint-box" id="h6">El nombre de quienes son capaces de descifrar lo indescifrable. Los que llegaron hasta aquí. ¿Cómo se llamaría el mundo a sí mismo si supiera que puede romper cualquier código?</div>
         </div>
       </div>
@@ -889,9 +889,9 @@ body::after {
       </svg>
     </div>
   </div>
-  <div class="final-title">ACCESO CONCEDIDO</div>
-  <div class="stamp">PROTOCOLO 11-23 — COMPLETADO</div>
-  <div class="final-msg">
+  <div class="final-title" id="finalTitle">ACCESO CONCEDIDO</div>
+  <div class="stamp" id="finalStamp">PROTOCOLO 11-23 — COMPLETADO</div>
+  <div class="final-msg" id="finalMsg">
     Bienvenidos al otro lado del espejo.<br>
     Han demostrado que la realidad tiene capas y que <span class="hi">saben cómo pelarlas</span>.<br><br>
     El Protocolo 11-23 no termina aquí.<br>
@@ -907,20 +907,259 @@ body::after {
   <button class="btn-start" style="margin-top:28px;font-size:13px;padding:12px 40px;" onclick="restart()">↺ REINICIAR PROTOCOLO</button>
 </div>
 
-</div><script>
-// ── STATE ──
-let cur='boot', secs=0, tiv=null, fails=0, hints=0;
+</div>
+<script>
+let cur='boot', secs=0, tiv=null, fails=0, hints=0, lang='es';
 
 const ANS={
   1:['101.101.011','101101011'],
-  2:['libertad'],
-  3:['luz'],
-  4:['todo esta','todoesta','todo está','todoestá'],
-  5:['negro'],
+  2:['libertad','freedom'],
+  3:['luz','light'],
+  4:['todo esta','todoesta','todo está','todoestá','all is','allis'],
+  5:['negro','black'],
   fin:['11-23-04-04']
 };
 
-// ── SCALE STAGE ──
+const MSGS={
+  es:{
+    rotMsg:'ROTACIÓN NO COMPATIBLE<br><span style="font-size:12px;color:var(--gray);margin-top:8px;display:block">El Protocolo requiere orientación horizontal</span>',
+    sys:'▌ SISTEMA ÓMEGA — NODO 11-23 ▌',
+    t1:'PROTOCOLO',
+    t2:'11-23',
+    sub:'CLASIFICACIÓN ÓMEGA · ACCESO RESTRINGIDO',
+    boot:'<span class="dm">// INICIO DE TRANSMISIÓN — 03:41:17 UTC</span><br><br>Han encontrado este canal porque <span class="hi">merecen encontrarlo</span>.<br>El mundo opera sobre dos capas: la que se muestra y la que <span class="am">sostiene todo lo demás</span>.<br><br>El <span class="hi">Protocolo 11-23</span> no es un juego. Es una <span class="am">prueba de percepción</span>.<br>Los que ven píxeles donde otros ven imágenes. Los que leen código donde otros leen páginas.<br>Los que descifran <span class="hi">donde otros solo obedecen</span>.<br><br><span class="dm">// Fibonacci conocía la puerta. El Arquitecto dejó el mapa. La Máquina guarda la llave.</span><br><br><em>¿Están preparados para ver lo que está oculto?</em>&nbsp;&nbsp;<span class="hi">PROTOCOLO 11-23 — INICIALIZADO.</span> <span class="cursor"></span>',
+    langBtn:'🌐 ENGLISH VERSION',
+    e1_num:'ENIGMA 01 — ESTEGANOGRAFÍA',
+    e1_title:'EL PÍXEL DE LA VERDAD',
+    e1_desc:'La realidad tiene capas. No toda la información se escribe. Algunas cosas se <em>ocultan</em> en el punto donde la naturaleza las colocaría.',
+    e1_c:'Fig. 0x01 — Sector Bosque Norte · Interferencia detectada · Busca el punto de origen',
+    e1_r:'FRAGMENTO RECUPERADO',
+    e1_m:'El primer fragmento está en el aire: <strong>101.101.011</strong><span style="color:var(--gray);font-size:11px;display:block;margin-top:5px;">[Binario → Decimal → Coordenada]</span>',
+    e1_cl:'<span class="dm">// Transmisión recibida — canal encriptado</span><br><br>La imagen contiene una anomalía imperceptible.<br>No es ruido. Es <span class="rct">INFORMACIÓN</span>.<br><br>Quien diseñó este sistema conocía la proporción que gobierna los nautilus, las galaxias y los girasoles.<br><br><span class="am">Ese mismo número define el punto de origen.</span>',
+    e1_l:'Introduce el código binario encontrado',
+    e1_h:'La proporción áurea divide el espacio en ~61.8% y ~38.2%. Aplica eso a las coordenadas X e Y de la imagen. Haz clic en ese punto exacto.',
+    e1_hb:'▶ Solicitar pista de nivel 1',
+    arch:'▶ Archivo del Arquitecto',
+    e2_num:'ENIGMA 02 — TEXTO OCULTO',
+    e2_title:'EL COMENTARIO DEL ARQUITECTO',
+    e2_desc:'Mis secretos no están escritos. Están <em>construidos</em>. Lo que ves no es todo lo que existe.',
+    e2_cl:'<span class="dm">ENTRADA #0x2F — ÚLTIMA ACTUALIZACIÓN: DESCONOCIDA</span><br><br>Los sistemas que diseñé no fueron construidos para ser comprendidos.<br>Fueron construidos para <span class="rct">PERSISTIR</span>.<br><br>Si has llegado hasta aquí leyendo la superficie,<br>aún no has llegado a ningún sitio.<br><br>La arquitectura real se encuentra <em>entre las líneas</em>.<br>No en el texto. En la <span class="rct">ESTRUCTURA</span>.<br><br><span class="dm">— El Arquitecto, transmisión final</span>',
+    e2_l:'Palabra oculta encontrada en la página',
+    e2_h:'El texto tiene el mismo color que el fondo de la página. Selecciona con el ratón las zonas aparentemente vacías del blog — el color de selección lo hará visible. La clave tiene 8 letras y representa un concepto filosófico ligado a la autonomía individual.',
+    e3_num:'ENIGMA 03 — DECODIFICACIÓN BASE64',
+    e3_title:'EL ECO DE BASE64',
+    e3_desc:'Los datos nunca mienten. Pero a veces se disfrazan de ruido para protegerse de quienes no merecen escucharlos.',
+    e3_note:'Cadena interceptada en el canal del Arquitecto.<br>El formato es reconocible para quienes saben buscarlo.',
+    e3_info:'Utiliza la herramienta Base64 disponible en el <span style="color:var(--amber);font-weight:bold;">ARCHIVO DEL ARQUITECTO</span> para decodificar la señal.',
+    e3_l:'Última palabra del mensaje decodificado',
+    e3_h:'Base64 convierte datos binarios en texto ASCII. Decodifica la cadena y lee la última palabra del mensaje resultante. Es sinónimo de "iluminación" en este contexto.',
+    e4_num:'ENIGMA 04 — CIFRADO VIGENÈRE',
+    e4_title:'EL SALTO DE VIGENÈRE',
+    e4_desc:'Un alfabeto es una ilusión de orden. Desplázalo el número correcto de posiciones y la ilusión se disuelve.',
+    e4_c_lbl:'Mensaje cifrado',
+    e4_h_lbl:'Pista del Arquitecto',
+    e4_h_txt:'"El Arquitecto tiene la llave.<br>Búscala donde dejó sus secretos."',
+    e4_n:'Un alfabeto es una ilusión de orden.<br>Desplaza el orden el número correcto de posiciones<br>y la ilusión se <span class="am">disuelve en verdad</span>.',
+    e4_s1:'Obtén la clave del <span style="color:var(--green);">ENIGMA 02</span>.',
+    e4_s2:'Accede al módulo Vigenère en el <span style="color:var(--amber);">ARCHIVO DEL ARQUITECTO</span>.',
+    e4_s3:'Introduce el criptograma: <span style="color:var(--green);letter-spacing:.1em;">EWESVLTD</span> (sin espacio).',
+    e4_s4:'Introduce la clave encontrada en el Enigma 02.',
+    e4_s5:'Selecciona <em>Descifrar</em>. El mensaje emergerá.',
+    e4_l:'Mensaje descifrado (2 palabras)',
+    e4_h:'Vigenère usa una clave de texto que se repite. Con la clave correcta de 8 letras del Enigma 02, el mensaje de 8 caracteres se convierte en 2 palabras con sentido filosófico.',
+    e5_num:'ENIGMA 05 — CIFRADO HISTÓRICO',
+    e5_title:'LA MÁQUINA ENIGMA',
+    e5_desc:'En 1943, una máquina guardó los secretos de una guerra. Esta noche, guarda el tuyo.',
+    e5_level:'NIVEL MÁXIMO — USO ÚNICO',
+    e5_n:'La máquina no miente. La máquina no perdona errores.<br>Un rotor fuera de posición y el mensaje se convierte en caos.<br><br>El caos no es nuestro enemigo. El caos es nuestro <em>filtro</em>.<br>Solo los dignos configuran correctamente.',
+    e5_r1:'Rotor I',
+    e5_r2:'Rotor II',
+    e5_r3:'Rotor III',
+    e5_model:'Modelo',
+    e5_ring:'Ring Setting',
+    e5_ref:'Reflector',
+    e5_plug:'Plugboard',
+    e5_plug_val:'Sin conexiones',
+    e5_msg:'Mensaje cifrado',
+    e5_l:'Palabra descifrada por la Máquina Enigma',
+    e5_h:'La palabra es un color. Específicamente, el color de la ausencia total de luz. Verifica que los rotores estén en orden I-II-III y posiciones C, A, T.',
+    e6_num:'ENIGMA 06 — LÓGICA COMBINATORIA — FASE FINAL',
+    e6_title:'LA PUERTA DEL SILENCIO',
+    e6_desc:'Todo lo que has descifrado converge aquí. El camino dejó sus huellas en ti. Ahora combínalas.',
+    e6_msg:'Solo mira hacia arriba',
+    e6_ctx:'Pero la Puerta del Silencio no responde a fragmentos.<br>Responde a quien conoce el <span class="am">nombre completo del Protocolo</span>.<br><br>El nombre de quienes demostraron que lo imposible<br>no era imposible. Solo estaba <span style="color:var(--green);">esperando ser descifrado</span>.',
+    e6_intro:'Introduce la contraseña final para completar el Protocolo 11-23.<br><span style="color:var(--amber);">Una sola contraseña. Una sola puerta.</span>',
+    e6_l:'CONTRASEÑA DE ACCESO FINAL',
+    correct:'✓ CORRECTO — FRAGMENTO VALIDADO',
+    incorrect:'✗ INCORRECTO — EL PROTOCOLO RECHAZA RESPUESTAS IMPRECISAS',
+    correctFin:'✓ CONTRASEÑA ACEPTADA — ACCESO CONCEDIDO',
+    incorrectFin:'✗ ACCESO DENEGADO — LA PUERTA PERMANECE SELLADA',
+    finalTitle:'ACCESO CONCEDIDO',
+    finalStamp:'PROTOCOLO 11-23 — COMPLETADO',
+    finalMsg:'Bienvenidos al otro lado del espejo.<br>Han demostrado que la realidad tiene capas y que <span class="hi">saben cómo pelarlas</span>.<br><br>El Protocolo 11-23 no termina aquí.<br>Termina cuando dejen de necesitar que alguien les diga <span class="hi">dónde buscar</span>.<br><span style="color:var(--gray);font-size:13px;">— El Arquitecto, en algún lugar que no está en ningún mapa</span>',
+    reiniciar:'↺ REINICIAR PROTOCOLO'
+  },
+  en:{
+    rotMsg:'ROTATION NOT SUPPORTED<br><span style="font-size:12px;color:var(--gray);margin-top:8px;display:block">The Protocol requires horizontal orientation</span>',
+    sys:'▌ OMEGA SYSTEM — NODE 11-23 ▌',
+    t1:'PROTOCOL',
+    t2:'11-23',
+    sub:'OMEGA CLASSIFICATION · RESTRICTED ACCESS',
+    boot:'<span class="dm">// TRANSMISSION START — 03:41:17 UTC</span><br><br>You found this channel because <span class="hi">you deserve to find it</span>.<br>The world operates on two layers: the one shown and the one that <span class="am">holds everything else</span>.<br><br><span class="hi">Protocol 11-23</span> is not a game. It is a <span class="am">test of perception</span>.<br>Those who see pixels where others see images. Those who read code where others read pages.<br>Those who decipher <span class="hi">where others merely obey</span>.<br><br><span class="dm">// Fibonacci knew the door. The Architect left the map. The Machine guards the key.</span><br><br><em>Are you ready to see what is hidden?</em>&nbsp;&nbsp;<span class="hi">PROTOCOL 11-23 — INITIALIZED.</span> <span class="cursor"></span>',
+    langBtn:'🌐 SPANISH VERSION',
+    e1_num:'ENIGMA 01 — STEGANOGRAPHY',
+    e1_title:'THE PIXEL OF TRUTH',
+    e1_desc:'Reality has layers. Not all information is written. Some things are <em>hidden</em> in the place where nature put them.',
+    e1_c:'Fig. 0x01 — North Forest Sector · Interference detected · Find the point of origin',
+    e1_r:'FRAGMENT RECOVERED',
+    e1_m:'The first fragment is in the air: <strong>101.101.011</strong><span style="color:var(--gray);font-size:11px;display:block;margin-top:5px;">[Binary → Decimal → Coordinate]</span>',
+    e1_cl:'<span class="dm">// Transmission received — encrypted channel</span><br><br>The image contains an imperceptible anomaly.<br>It is not noise. It is <span class="rct">INFORMATION</span>.<br><br>Whoever designed this system knew the proportion that governs nautiluses, galaxies and sunflowers.<br><br><span class="am">That same number defines the point of origin.</span>',
+    e1_l:'Enter the binary code found',
+    e1_h:'The golden ratio divides space into ~61.8% and ~38.2%. Apply that to the X and Y coordinates of the image. Click on that exact point.',
+    e1_hb:'▶ Request hint level 1',
+    arch:'▶ Architect\'s Archive',
+    e2_num:'ENIGMA 02 — HIDDEN TEXT',
+    e2_title:'THE ARCHITECT\'S COMMENT',
+    e2_desc:'My secrets are not written. They are <em>built</em>. What you see is not everything that exists.',
+    e2_cl:'<span class="dm">ENTRY #0x2F — LAST UPDATE: UNKNOWN</span><br><br>The systems I designed were not built to be understood.<br>They were built to <span class="rct">PERSIST</span>.<br><br>If you have read this far on the surface,<br>you have not arrived anywhere yet.<br><br>The real architecture lies <em>between the lines</em>.<br>Not in the text. In the <span class="rct">STRUCTURE</span>.<br><br><span class="dm">— The Architect, final transmission</span>',
+    e2_l:'Hidden word found on the page',
+    e2_h:'The text has the same color as the page background. Select with the mouse the apparently empty areas of the blog — the selection color will make it visible. The key has 8 letters and represents a philosophical concept linked to individual autonomy.',
+    e3_num:'ENIGMA 03 — BASE64 DECODING',
+    e3_title:'THE ECHO OF BASE64',
+    e3_desc:'Data never lies. But sometimes they disguise themselves as noise to protect themselves from those who don\'t deserve to hear them.',
+    e3_note:'String intercepted on the Architect\'s channel.<br>The format is recognizable to those who know how to look for it.',
+    e3_info:'Use the Base64 tool available in the <span style="color:var(--amber);font-weight:bold;">ARCHITECT\'S ARCHIVE</span> to decode the signal.',
+    e3_l:'Last word of the decoded message',
+    e3_h:'Base64 converts binary data to ASCII text. Decode the string and read the last word of the resulting message. It is synonymous with "enlightenment" in this context.',
+    e4_num:'ENIGMA 04 — VIGENÈRE CIPHER',
+    e4_title:'THE VIGENÈRE LEAP',
+    e4_desc:'An alphabet is an illusion of order. Shift it the correct number of positions and the illusion dissolves.',
+    e4_c_lbl:'Encrypted message',
+    e4_h_lbl:'Architect\'s hint',
+    e4_h_txt:'"The Architect has the key.<br>Find it where he left his secrets."',
+    e4_n:'An alphabet is an illusion of order.<br>Shift the order the correct number of positions<br>and the illusion <span class="am">dissolves into truth</span>.',
+    e4_s1:'Get the key from <span style="color:var(--green);">ENIGMA 02</span>.',
+    e4_s2:'Access the Vigenère module in the <span style="color:var(--amber);">ARCHITECT\'S ARCHIVE</span>.',
+    e4_s3:'Enter the cryptogram: <span style="color:var(--green);letter-spacing:.1em;">EWESVLTD</span> (no space).',
+    e4_s4:'Enter the key found in Enigma 02.',
+    e4_s5:'Select <em>Decrypt</em>. The message will emerge.',
+    e4_l:'Decrypted message (2 words)',
+    e4_h:'Vigenère uses a text key that repeats. With the correct 8-letter key from Enigma 02, the 8-character message becomes 2 words with philosophical meaning.',
+    e5_num:'ENIGMA 05 — HISTORICAL CIPHER',
+    e5_title:'THE ENIGMA MACHINE',
+    e5_desc:'In 1943, a machine guarded the secrets of a war. Tonight, it guards yours.',
+    e5_level:'MAXIMUM LEVEL — SINGLE USE',
+    e5_n:'The machine does not lie. The machine does not forgive errors.<br>One rotor out of position and the message becomes chaos.<br><br>Chaos is not our enemy. Chaos is our <em>filter</em>.<br>Only the worthy configure it correctly.',
+    e5_r1:'Rotor I',
+    e5_r2:'Rotor II',
+    e5_r3:'Rotor III',
+    e5_model:'Model',
+    e5_ring:'Ring Setting',
+    e5_ref:'Reflector',
+    e5_plug:'Plugboard',
+    e5_plug_val:'No connections',
+    e5_msg:'Encrypted message',
+    e5_l:'Word decrypted by the Enigma Machine',
+    e5_h:'The word is a color. Specifically, the color of the complete absence of light. Verify that the rotors are in order I-II-III and positions C, A, T.',
+    e6_num:'ENIGMA 06 — COMBINATORIAL LOGIC — FINAL PHASE',
+    e6_title:'THE DOOR OF SILENCE',
+    e6_desc:'Everything you have deciphered converges here. The path has left its marks on you. Now combine them.',
+    e6_msg:'Just look up',
+    e6_ctx:'But the Door of Silence does not respond to fragments.<br>It responds to those who know the <span class="am">complete name of the Protocol</span>.<br><br>The name of those who proved that the impossible<br>was not impossible. It was just <span style="color:var(--green);">waiting to be deciphered</span>.',
+    e6_intro:'Enter the final password to complete Protocol 11-23.<br><span style="color:var(--amber);">One password. One door.</span>',
+    e6_l:'FINAL ACCESS PASSWORD',
+    correct:'✓ CORRECT — FRAGMENT VALIDATED',
+    incorrect:'✗ INCORRECT — THE PROTOCOL REJECTS IMPRECISE ANSWERS',
+    correctFin:'✓ PASSWORD ACCEPTED — ACCESS GRANTED',
+    incorrectFin:'✗ ACCESS DENIED — THE DOOR REMAINS SEALED',
+    finalTitle:'ACCESS GRANTED',
+    finalStamp:'PROTOCOL 11-23 — COMPLETED',
+    finalMsg:'Welcome to the other side of the mirror.<br>You have proven that reality has layers and that <span class="hi">you know how to peel them</span>.<br><br>Protocol 11-23 does not end here.<br>It ends when you no longer need someone to tell you <span class="hi">where to look</span>.<br><span style="color:var(--gray);font-size:13px;">— The Architect, somewhere that is not on any map</span>',
+    reiniciar:'↺ RESTART PROTOCOL'
+  }
+};
+
+function switchLang(){
+  lang = lang === 'es' ? 'en' : 'es';
+  const m = MSGS[lang];
+  document.getElementById('rotMsg').innerHTML = m.rotMsg;
+  document.getElementById('bootSys').textContent = m.sys;
+  document.getElementById('bootTitle1').textContent = m.t1;
+  document.getElementById('bootTitle2').textContent = m.t2;
+  document.getElementById('bootSub').textContent = m.sub;
+  document.getElementById('bootMsg').innerHTML = m.boot;
+  document.getElementById('langBtn').textContent = m.langBtn;
+  
+  document.getElementById('e1_num').textContent = m.e1_num;
+  document.getElementById('e1_title').textContent = m.e1_title;
+  document.getElementById('e1_desc').innerHTML = m.e1_desc;
+  document.getElementById('e1_caption').textContent = m.e1_c;
+  document.getElementById('e1_recover').textContent = m.e1_r;
+  document.getElementById('e1_hint_msg').innerHTML = m.e1_m;
+  document.getElementById('e1_clue').innerHTML = m.e1_cl;
+  document.getElementById('e1_label').textContent = m.e1_l;
+  document.getElementById('h1').textContent = m.e1_h;
+  document.getElementById('hintBtn1').textContent = m.e1_hb;
+  
+  document.getElementById('e2_num').textContent = m.e2_num;
+  document.getElementById('e2_title').textContent = m.e2_title;
+  document.getElementById('e2_desc').innerHTML = m.e2_desc;
+  document.getElementById('e2_clue').innerHTML = m.e2_cl;
+  document.getElementById('e2_label').textContent = m.e2_l;
+  document.getElementById('h2').textContent = m.e2_h;
+  
+  document.getElementById('e3_num').textContent = m.e3_num;
+  document.getElementById('e3_title').textContent = m.e3_title;
+  document.getElementById('e3_desc').innerHTML = m.e3_desc;
+  document.getElementById('e3_note').innerHTML = m.e3_note;
+  document.getElementById('e3_info').innerHTML = m.e3_info;
+  document.getElementById('e3_label').textContent = m.e3_l;
+  document.getElementById('h3').textContent = m.e3_h;
+  
+  document.getElementById('e4_num').textContent = m.e4_num;
+  document.getElementById('e4_title').textContent = m.e4_title;
+  document.getElementById('e4_desc').innerHTML = m.e4_desc;
+  document.getElementById('e4_cipher_lbl').textContent = m.e4_c_lbl;
+  document.getElementById('e4_hint_lbl').textContent = m.e4_h_lbl;
+  document.getElementById('e4_hint_text').innerHTML = m.e4_h_txt;
+  document.getElementById('e4_note').innerHTML = m.e4_n;
+  document.getElementById('e4_steps').innerHTML = `<li>${m.e4_s1}</li><li>${m.e4_s2}</li><li>${m.e4_s3}</li><li>${m.e4_s4}</li><li>${m.e4_s5}</li>`;
+  document.getElementById('e4_label').textContent = m.e4_l;
+  document.getElementById('h4').textContent = m.e4_h;
+  
+  document.getElementById('e5_num').textContent = m.e5_num;
+  document.getElementById('e5_title').textContent = m.e5_title;
+  document.getElementById('e5_desc').innerHTML = m.e5_desc;
+  document.getElementById('e5_level').innerHTML = m.e5_level;
+  document.getElementById('e5_note').innerHTML = m.e5_n;
+  document.getElementById('e5_rot1').textContent = m.e5_r1;
+  document.getElementById('e5_rot2').textContent = m.e5_r2;
+  document.getElementById('e5_rot3').textContent = m.e5_r3;
+  document.getElementById('e5_model_lbl').textContent = m.e5_model;
+  document.getElementById('e5_ring_lbl').textContent = m.e5_ring;
+  document.getElementById('e5_ref_lbl').textContent = m.e5_ref;
+  document.getElementById('e5_plug_lbl').textContent = m.e5_plug;
+  document.getElementById('e5_plug_val').textContent = m.e5_plug_val;
+  document.getElementById('e5_msg_lbl').textContent = m.e5_msg;
+  document.getElementById('e5_label').textContent = m.e5_l;
+  document.getElementById('h5').textContent = m.e5_h;
+  
+  document.getElementById('e6_num').textContent = m.e6_num;
+  document.getElementById('e6_title').textContent = m.e6_title;
+  document.getElementById('e6_desc').innerHTML = m.e6_desc;
+  document.getElementById('e6_msg').innerHTML = m.e6_msg;
+  document.getElementById('e6_context').innerHTML = m.e6_ctx;
+  document.getElementById('e6_final_intro').innerHTML = m.e6_intro;
+  document.getElementById('e6_label').textContent = m.e6_l;
+  document.getElementById('h6').textContent = m.e6_h;
+  
+  document.getElementById('finalTitle').textContent = m.finalTitle;
+  document.getElementById('finalStamp').textContent = m.finalStamp;
+  document.getElementById('finalMsg').innerHTML = m.finalMsg;
+  
+  document.querySelectorAll('#archNav').forEach(el => el.textContent = m.arch);
+}
+
 function scaleStage(){
   const s=document.getElementById('stage');
   const ww=window.innerWidth, wh=window.innerHeight;
@@ -930,7 +1169,6 @@ function scaleStage(){
 window.addEventListener('resize',scaleStage);
 scaleStage();
 
-// ── NAVIGATE ──
 function go(id){
   document.getElementById(cur).classList.remove('active');
   document.getElementById(id).classList.add('active');
@@ -947,7 +1185,6 @@ function flash(){
   setTimeout(()=>el.classList.remove('go'),220);
 }
 
-// ── TIMER ──
 function startTimer(){
   tiv=setInterval(()=>{
     secs++;
@@ -959,7 +1196,6 @@ function startTimer(){
 }
 function fmtTime(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
 
-// ── FOREST CLICK ──
 function clickForest(e){
   const r=document.getElementById('fimg').getBoundingClientRect();
   const px=(e.clientX-r.left)/r.width;
@@ -972,7 +1208,6 @@ function showPixel(){
   flash();
 }
 
-// ── HINTS ──
 function hint(n){
   const id=n===6?'h6':'h'+n;
   const el=document.getElementById(id);
@@ -980,20 +1215,20 @@ function hint(n){
   else el.classList.remove('on');
 }
 
-// ── CHECK ANSWERS ──
 function chk(n){
   const inp=document.getElementById('a'+n);
   const fb=document.getElementById('fb'+n);
   const v=inp.value.trim().toLowerCase();
+  const m = MSGS[lang];
   if(ANS[n].includes(v)){
     inp.classList.remove('err'); inp.classList.add('ok');
-    fb.textContent='✓ CORRECTO — FRAGMENTO VALIDADO';
+    fb.textContent = m.correct;
     fb.className='feedback ok';
     flash();
     setTimeout(()=>go('e'+(n+1)),750);
   } else {
     inp.classList.remove('ok'); inp.classList.add('err');
-    fb.textContent='✗ INCORRECTO — EL PROTOCOLO RECHAZA RESPUESTAS IMPRECISAS';
+    fb.textContent = m.incorrect;
     fb.className='feedback err';
     fails++;
     setTimeout(()=>inp.classList.remove('err'),500);
@@ -1004,9 +1239,10 @@ function chkFin(){
   const inp=document.getElementById('afin');
   const fb=document.getElementById('fbfin');
   const v=inp.value.trim().toLowerCase();
+  const m = MSGS[lang];
   if(ANS.fin.includes(v)){
     inp.classList.add('ok');
-    fb.textContent='✓ CONTRASEÑA ACEPTADA — ACCESO CONCEDIDO';
+    fb.textContent = m.correctFin;
     fb.className='feedback ok';
     clearInterval(tiv);
     flash();
@@ -1021,14 +1257,13 @@ function chkFin(){
     },600);
   } else {
     inp.classList.add('err');
-    fb.textContent='✗ ACCESO DENEGADO — LA PUERTA PERMANECE SELLADA';
+    fb.textContent = m.incorrectFin;
     fb.className='feedback err';
     fails++;
     setTimeout(()=>inp.classList.remove('err'),500);
   }
 }
 
-// ── RESTART ──
 function restart(){
   secs=0; fails=0; hints=0;
   clearInterval(tiv); tiv=null;
